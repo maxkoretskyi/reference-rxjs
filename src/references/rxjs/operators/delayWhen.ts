@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
 import { fullObserver, setUpDOM, stream } from '../utils';
 
-const operator = 'map';
+const operator = 'delayWhen';
 
 setUpDOM(operator);
 

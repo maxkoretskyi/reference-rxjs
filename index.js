@@ -1,21 +1,22 @@
 const express = require('express');
-const index = express();
+const server = express();
 const port = 8080;
 const webpack = require('webpack');
 const path = require('path');
 
 runWebpack();
+runServer();
 
 function runServer() {
     console.log('Starting server...');
 
-    index.use(express.static('public'));
+    server.use(express.static('public'));
 
-    index.get('/sayhello', function (req, res) {
-        res.send('Hello World!')
+    server.get('/sayhello', function (req, res) {
+        res.send('Hello World!');
     });
 
-    index.listen(port, () => {
+    server.listen(port, () => {
         console.log(`Example app listening at http://localhost:${port}`);
     });
 }
@@ -27,7 +28,8 @@ function runWebpack() {
     const watching = compiler.watch({}, (err, stats) => {
         if (!err) {
             console.log('Successfully compiled web sources');
-            runServer();
+        } else {
+            process.exit();
         }
     });
 }
