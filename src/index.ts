@@ -14,7 +14,8 @@
 // import './references/rxjs/operators/concatMap';
 // import './references/rxjs/operators/switchMap';
 // import './references/rxjs/operators/exhaustMap';
-import './references/rxjs/operators/debounceTime';
+// import './references/rxjs/operators/debounceTime';
+import './references/rxjs/operators/throttleTime';
 
 /*
 import { from, fromEvent, interval, timer } from 'rxjs';
