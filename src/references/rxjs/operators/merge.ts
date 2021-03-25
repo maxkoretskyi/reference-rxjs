@@ -1,4 +1,4 @@
-import { concat, merge } from 'rxjs';
+import { merge } from 'rxjs';
 import { fullObserver, setUpDOM, stream } from '../utils';
 
 const operator = 'merge';

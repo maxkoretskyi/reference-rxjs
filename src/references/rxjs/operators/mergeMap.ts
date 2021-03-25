@@ -1,11 +1,12 @@
-import { mergeMap } from 'rxjs/operators';
+import { interval } from 'rxjs';
+import { map, mergeMap, take } from 'rxjs/operators';
 import { fullObserver, setUpDOM, stream } from '../utils';
 
 const operator = 'mergeMap';
 
 setUpDOM(operator);
 
-const h = stream('h', 100, ['a', 'b']);
+const h = interval(100).pipe(take(2), map(i => ['a', 'b'][i]));
 
 h.pipe(
     mergeMap((name) => {

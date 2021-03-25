@@ -39,18 +39,19 @@ export function stream(name, delayOrValues, countOrValues, log?) {
     return s;
 }
 
-export function fullObserver(stream) {
+export function fullObserver(value) {
     return {
         next(v) {
-            const message = stream.length < 5 ? `[${stream}]:\t\t${v}` : `[${stream}]:\t${v}`;
+            const message = value.length < 5 ? `[${value}]:\t\t${v}` : `[${value}]:\t${v}`;
             log(message);
+            console.log(message);
         },
         error() {
-            const message = stream.length < 5 ? `[${stream}]:\t\tERROR` : `[${stream}]:\tERROR`;
+            const message = value.length < 5 ? `[${value}]:\t\tERROR` : `[${value}]:\tERROR`;
             log(message);
         },
         complete() {
-            const message = stream.length < 5 ? `[${stream}]:\t\tCOMPLETE` : `[${stream}]:\tCOMPLETE`;
+            const message = value.length < 5 ? `[${value}]:\t\tCOMPLETE` : `[${value}]:\tCOMPLETE`;
             log(message);
         }
     };
@@ -69,7 +70,7 @@ export function partialObserver(stream) {
     };
 }
 
-function log(v) {
+export function log(v) {
     document.body.querySelector('pre').appendChild(document.createElement('div')).textContent = v;
 }
 
