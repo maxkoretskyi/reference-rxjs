@@ -8,11 +8,11 @@ setUpDOM(operator);
 const a = stream('a', 200, 5);
 
 a.pipe(
-    map(n => {
-        if (n === 'a-1') {
-            throw 'one!';
-        }
-        return n;
-    }),
+    map(throwOnOne),
     retry(2)
 ).subscribe(fullObserver(operator));
+
+function throwOnOne(v) {
+    if (v === 'a-1') throw 'one!';
+    return v;
+}

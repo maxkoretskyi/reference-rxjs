@@ -1,24 +1,21 @@
-import { of } from 'rxjs';
-import { catchError, map, take } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { fullObserver, setUpDOM, stream } from '../utils';
 
 const operator = 'catchError';
 
 setUpDOM(operator);
 
-// case 1 - return observable to subscribe to from a callback
-// (the function gets current observable as param)
-// case 2 - throw an error
-
 const a = stream('a', 200, 5);
 const b = stream('b', 200, 3);
 
+// EXPLANATION
+// emits a-0, then with a-1 the observable throws an error
+// the callback is executed and the source observable is replaced with the stream `b`
+// so the next values are b-0, b-1 and b-2
 a.pipe(
-    map(n => {
-        if (n === 'a-1') {
-            throw 'one!';
-        }
-        return n;
+    map(v => {
+        if (v === 'a-1') throw 'one!';
+        return v;
     }),
     catchError(() => b)
 ).subscribe(fullObserver(operator));

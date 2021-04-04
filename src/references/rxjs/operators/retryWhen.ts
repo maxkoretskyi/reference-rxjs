@@ -1,5 +1,4 @@
-import { empty, EMPTY, interval, Observable, of, Subject, throwError, timer } from 'rxjs';
-import { map, mergeMap, retryWhen, switchMap, take, takeWhile } from 'rxjs/operators';
+import { map, mapTo, retryWhen, scan, takeWhile } from 'rxjs/operators';
 import { fullObserver, setUpDOM, stream } from '../utils';
 
 const operator = 'retryWhen';
@@ -7,71 +6,29 @@ const operator = 'retryWhen';
 setUpDOM(operator);
 
 const a = stream('a', 200, 5);
-const b = stream('b', [5000], 1);
-
-/*a.pipe(
-    map(n => {
-        if (n === 'a-1') {
-            throw 'one!';
-        }
-        return n;
-    }),
-    retryWhen((errors) => {
-        return errors.pipe(mergeMap((error) => {
-            // this doesn't work -> I never get COMPLETE notification here
-            debugger
-            return EMPTY;
-            // this works -> I get ERROR in an observer
-            // return throwError('error from retryWhen');
-        }));
-    })
-).subscribe({
-    next(value) {
-        console.log(value);
-    },
-    complete() {
-        console.log('complete');
-    },
-    error() {
-        console.log('error');
-    }
-});*/
-
-let attempts = 0;
 
 a.pipe(
-    map(n => {
-        if (n === 'a-1') {
-            throw 'one!';
-        }
-        return n;
-    }),
+    map(throwOnOne),
     retryWhen((errors) => {
-        return interval(100).pipe(
-            map(() => {
-                if (attempts < 2) {
-                    attempts++;
+        // although most implementations return `error` stream and pipe to it,
+        // because it's needed to get access to the future errors
+        // you can return any observable from the callback, e.g. interval()
+        return errors.pipe(
+            mapTo((error) => 1),
+            scan((acc, value, index) => index, 0),
 
-                    return 1;
-                } else {
-                    return 'complete';
-                }
-            }),
-            takeWhile((value) => value !== 'complete')
+            // retry 2 times and then send `complete`
+            // since`takeWhile` completes when predicate is false
+            // if we need to send the error, a simple `map` can be added above to throw an error
+            takeWhile((value) => value < 2)
         );
-
-        /*return errors.pipe(
-            map((error) => {
-                if (attempts < 2) {
-                    attempts++;
-
-                    return 1;
-                } else {
-                    return 'complete';
-                }
-            }),
-            takeWhile((value) => value !== 'complete')
-        );*/
     })
 ).subscribe(fullObserver(operator));
+
+
+function throwOnOne(v) {
+    if (v === 'a-1') throw 'one!';
+    return v;
+}
+
 

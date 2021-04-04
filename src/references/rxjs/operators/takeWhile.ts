@@ -1,4 +1,4 @@
-import { map, takeWhile } from 'rxjs/operators';
+import { takeWhile } from 'rxjs/operators';
 import { fullObserver, setUpDOM, stream } from '../utils';
 
 const operator = 'takeWhile';
