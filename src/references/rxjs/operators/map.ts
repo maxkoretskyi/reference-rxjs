@@ -9,5 +9,5 @@ const a = stream('a', 200, 3);
 a.pipe(map(transform)).subscribe(fullObserver(operator));
 
 function transform(v) {
-    return v.split('-').shift();
+    return v.split('-').pop();
 }

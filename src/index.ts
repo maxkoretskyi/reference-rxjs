@@ -1,3 +1,4 @@
+import './references/rxjs/operators/tap';
 // import './references/rxjs/operators/map';
 // import './references/rxjs/operators/scan';
 // import './references/rxjs/operators/reduce';
@@ -27,7 +28,7 @@
 // import './references/rxjs/operators/distinctUntilChanged';
 // import './references/rxjs/operators/filter';
 // import './references/rxjs/operators/from';
-import './references/rxjs/operators/of';
+// import './references/rxjs/operators/of';
 // import './references/rxjs/operators/delayWhen';
 // import './references/rxjs/operators/bufferTime';
 // import './references/rxjs/operators/buffer';
